@@ -17,43 +17,40 @@ export $(shell sed 's/=.*//' ui/.env.local)
 init:
 	$(MAKE) -C ui .env.local
 
-firebase.env:
-	cp .firebase.env.example firebase.env
-
-.PHONY: docker-compose/command
-docker-compose/command:
+.PHONY: command
+command:
 	docker compose $(COMMAND)
 
-.PHONY: docker-compose/build
-docker-compose/build:
+.PHONY: build
+build:
 	docker compose build
 
-.PHONY: docker-compose/up
-docker-compose/up:
+.PHONY: up
+up:
 	docker compose up
 
-.PHONY: docker-compose/up-d
-docker-compose/up-d:
+.PHONY: up/d
+up/d:
 	docker compose up -d
 
-.PHONY: docker-compose/up/service
-docker-compose/up/service:
+.PHONY: up/service
+up/service:
 	docker compose up $(SERVICE)
 
-.PHONY: docker-compose/bash/service
-docker-compose/bash/service:
+.PHONY:bash/service
+bash/service:
 	docker compose exec $(SERVICE) /bin/bash
 
-.PHONY: docker-compose/down
-docker-compose/down:
+.PHONY: down
+down:
 	docker compose down
 
-.PHONY: docker-compose/logs
-docker-compose/logs:
+.PHONY: logs
+logs:
 	docker compose logs -f
 
-.PHONY: docker-compose/down-remove
-__docker-compose/down-remove:
+.PHONY: down-remove
+down-remove:
 	docker compose down --rmi all --volumes --remove-orphans
 
 MIGRATION_SERVICE:=migration
