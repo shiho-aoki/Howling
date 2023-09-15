@@ -10,8 +10,8 @@ FLYWAY_CONF?=-url=jdbc:postgresql://$(DOCKER_DNS):$(DBPORT)/$(DBNAME) -user=$(DB
 SERVICE:=
 COMMAND:=
 
--include ui/.env.local
-export $(shell sed 's/=.*//' ui/.env.local)
+# -include ui/.env.local
+# export $(shell sed 's/=.*//' ui/.env.local)
 
 .PHONY: init
 init:

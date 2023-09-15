@@ -1,9 +1,9 @@
 FROM rust:1.54
 
-WORKDIR /usr/src/myapp
+WORKDIR /usr/src/api
 
 COPY . .
 
-RUN cargo install --path .
+# RUN cargo install --path .
 
-CMD ["myapp"]
+CMD ["api"]

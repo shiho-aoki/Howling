@@ -8,15 +8,20 @@ services:
       - "3000:3000"
     depends_on:
       - api
+    volumes:
+      - ./view:/app
+      - ./private:/private
 
   api:
     build:
-      context: .
-      dockerfile: ./api
+      context: ./api
     ports:
       - "8000:8000"
     depends_on:
       - db
+    volumes:
+      - ./api:/usr/src/api
+      - ./private:/usr/src/private
   
   swagger-ui:
     image: swaggerapi/swagger-ui
@@ -26,7 +31,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./swagger/:/swagger
+      - ./private/swagger/:/swagger
   
   db:
     image: postgres:11-alpine
