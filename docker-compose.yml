@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  view:
+    build:
+      context: ./view
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: ./api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-ui-server
+    depends_on:
+      - api
+    ports:
+      - 8080:8080
+    volumes:
+      - ./swagger/:/swagger
+  
+  db:
+    image: postgres:11-alpine
+    command: postgres -c log_statement=all
+    container_name: app-db
+    ports:
+      - ${DB_PORT:-5432}:5432
+    environment:
+      POSTGRES_USER: ${DB_USEDR:-root}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-p@ssw0rd}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./private/database/log:/var/log
+  
+  migration:
+    image: flyway/flyway
+    volumes:
+      - ./private/database/migration/schema:/flyway/sql
+    depends_on:
+      - db
+
+volumes:
+  db_data:
